@@ -31,11 +31,11 @@ public class UiMain {
 		//Here we are adding a product in database
 		// For this we need to start transaction and commit transaction
 		
- 		Products p7 = new Products(7, "Product7", 35, 100);
+ 		Products p8 = new Products(8, "Product8", 45, 280);
 		// This is our transaction where we can add, remove, update the products
 		em.getTransaction().begin();
 		
-		em.persist(p7);
+		em.persist(p8);
 		
 		em.getTransaction().commit();
 		
@@ -66,8 +66,52 @@ public class UiMain {
 		
 		em2.getTransaction().commit();
 		
-		em2.close();
+//		em2.close();
 		
- 
+		
+        //4. Here we are merging 
+		// We'll  write logic for update the product for that we can use merge and in transaction we can set the value of product
+		
+		System.out.println("Write the id of product that you want to update");
+		
+		int n = sc.nextInt();
+		
+		// Here we are finding the product so there is no need to start transaction because it is a DRL statement
+		
+		Products prod = em2.find(Products.class, n);
+		
+		if(prod!=null) {
+			em2.getTransaction().begin();
+			prod.setPrice(prod.getPrice() + 5000);
+			em2.getTransaction().commit();
+			System.out.println("Product updated successfully!!");
+//			em2.close();
+		} else {
+			System.out.println("Product not found whose id is "+n);
+		} 
+		
+		// Now we are performing the same updation operation with the help of merge method
+		
+		System.out.println("Write the id of product that you want to update using merge method");
+		
+		int m = sc.nextInt();
+		
+		// Here we are finding the product so there is no need to start transaction because it is a DRL statement
+		
+		Products produ = em2.find(Products.class, m);
+		
+		if(produ!=null) {
+			em2.getTransaction().begin();
+			produ.setPrice(produ.getPrice() + 3300);
+			em2.getTransaction().commit();
+			System.out.println("Product is up to date :)");
+			em2.close();
+		} else {
+			System.out.println("Product is not found whose id is "+m);
+		}
+		
+		
+		
+		
 	}
 }
